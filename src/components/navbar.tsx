@@ -1,22 +1,15 @@
+import { Input } from '@/components/ui/input';
+import { useDebounceAndThrottle } from '@/hooks/useDebounceAndThrottle';
+import { Search } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
-import { useGlobalState } from '@/context/UserContext';
-import useDebounce from '@/hooks/useDebounce';
-import { useEffect } from 'react';
 
 const Navbar = () => {
   const router = useRouter();
   const { pathname } = router;
   const isHome = pathname === '/';
-  const { searchUsernameValue, setSearchUsernameValue } = useGlobalState()
 
-  const debouncedSearchUsernameValue = useDebounce(searchUsernameValue, 500); 
-
-  useEffect(() => {
-    setSearchUsernameValue(debouncedSearchUsernameValue);
-  }, [debouncedSearchUsernameValue]);
+  const {setInstantValue} = useDebounceAndThrottle(); 
 
   return (
     <>
@@ -37,7 +30,7 @@ const Navbar = () => {
               type='search'
               placeholder='Username'
               id='inputUsername'
-              onChange={(e) => setSearchUsernameValue(e.target.value)}
+              onChange={(e) => setInstantValue(e.target.value)}
               className='border-none pl-2 focus-visible:ring-0 focus-visible:ring-offset-0'
             />
           </div>
