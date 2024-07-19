@@ -1,9 +1,6 @@
 import { CardUser } from '@/components/pages/home/CardUser';
 import { SkeletonCardUser } from '@/components/pages/home/SkeletonCardUser';
-import { useGlobalState } from '@/context/UserContext';
-import { useUsers } from '@/hooks/useUsers';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useHome } from '@/hooks/useHome';
 
 interface UserInterface {
   login: string;
@@ -27,22 +24,7 @@ interface UserInterface {
 }
 
 export default function Home({ initialUsers }) {
-  const router = useRouter();
-  const { searchUsernameValue, starredUsers, setSearchUsernameValue } =
-    useGlobalState();
-  const { users, loading, error } = useUsers(initialUsers, searchUsernameValue);
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      setSearchUsernameValue('');
-    };
-
-    router.events.on('routeChangeStart', handleRouteChange);
-
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChange);
-    };
-  }, [router, setSearchUsernameValue]);
+  const { users, loading, error, starredUsers } = useHome(initialUsers);
 
   if (loading) {
     return (

@@ -13,6 +13,7 @@ export function useUsers(initialUsers = [], searchUsernameValue = '') {
       setLoading(false);
     } catch (e) {
       setError(true);
+      setLoading(false);
     }
   }
 
@@ -25,6 +26,7 @@ export function useUsers(initialUsers = [], searchUsernameValue = '') {
       setLoading(false);
     } catch (e) {
       setError(true);
+      setLoading(false);
     }
   }
 

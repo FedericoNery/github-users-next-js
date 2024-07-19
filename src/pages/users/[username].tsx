@@ -1,3 +1,8 @@
+import { Companies } from '@/components/pages/details/Companies';
+import { Email } from '@/components/pages/details/Email';
+import { FollowersAndFollowing } from '@/components/pages/details/FollowersAndFollowing';
+import { Location } from '@/components/pages/details/Location';
+import { Twitter } from '@/components/pages/details/Twitter';
 import { FavButton } from '@/components/pages/home/FavButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,12 +12,7 @@ import { TypographyMuted } from '@/components/ui/typography/muted';
 import { useGlobalState } from '@/context/UserContext';
 import { useUsersDetail } from '@/hooks/useUsersDetail';
 import {
-  Building,
-  Link as LinkIcon,
-  Mail,
-  MapPin,
-  Twitter,
-  Users,
+  Link as LinkIcon
 } from 'lucide-react';
 import { useRouter } from 'next/router';
 
@@ -23,9 +23,11 @@ export default function UserDetailPage() {
   const { user, loading, error } = useUsersDetail(username);
 
   if (loading) {
-    return <div className='flex justify-center items-center'>
-      <LoadingSpinner className='mr-2 animate-spin' width={48} height={48}/>
-    </div>
+    return (
+      <div className='flex justify-center items-center'>
+        <LoadingSpinner className='mr-2 animate-spin' width={48} height={48} />
+      </div>
+    );
   }
 
   if (error) {
@@ -59,10 +61,6 @@ export default function UserDetailPage() {
     }
   };
 
-  const processedCompanies = company
-    ?.match(/@\w[\w-]*/g)
-    ?.map((name) => name.slice(1)) ?? null;
-
   return (
     <div className='mt-4 flex justify-center items-center content-center flex-col'>
       <Card className='w-[700px]'>
@@ -79,18 +77,7 @@ export default function UserDetailPage() {
             />
           </div>
           <TypographyMuted>{login}</TypographyMuted>
-          <div className='flex justify-center'>
-            <span className='flex'>
-              <Users className='pr-2 text-gray-500' />
-              <b className='pr-1'>{followers}</b> followers
-            </span>
-            <span className='pl-2'>
-              <b> - </b>
-            </span>
-            <span className='flex pl-2'>
-              <b className='pr-1'>{following}</b> following
-            </span>
-          </div>
+          <FollowersAndFollowing followers={followers} following={following}/>
           {blog && (
             <div className='flex justify-center items-center'>
               <LinkIcon className='w-4 h-4 mr-2 text-gray-500' />
@@ -100,40 +87,10 @@ export default function UserDetailPage() {
             </div>
           )}
 
-          {twitter_username && (
-            <div className='flex justify-center items-center'>
-              <Twitter className='w-4 h-4 text-gray-500 mr-1' />
-              <a
-                href={`https://twitter.com/${twitter_username}`}
-                className='hover:underline'
-              >
-                @{twitter_username}
-              </a>
-            </div>
-          )}
-          {email && (
-            <div className='flex justify-center items-center'>
-              <Mail className='w-4 h-4 mr-1 text-gray-500' />
-              {email}
-            </div>
-          )}
-          {location && (
-            <div className='flex justify-center items-center'>
-              <MapPin className='w-4 h-4 mr-1 text-gray-500' /> {location}
-            </div>
-          )}
-         {processedCompanies && <div className='flex justify-center items-center'>
-            <Building className='w-4 h-4 mr-1 text-gray-500' />
-             {processedCompanies.map((company, index) => (
-              <a
-                href={`https://github.com/${company}`}
-                className='hover:underline mr-1'
-              >
-                @{company}
-              </a>
-            ))}
-          </div>
-         }
+          <Twitter twitter_username={twitter_username} />
+          <Email email={email} />
+          <Location location={location} />
+          <Companies companiesString={company} />
         </CardContent>
       </Card>
     </div>

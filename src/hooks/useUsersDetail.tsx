@@ -12,8 +12,8 @@ export function useUsersDetail(username) {
       setUser(data);
       setLoading(false);
     } catch (e) {
-      setLoading(false);
       setError(true);
+      setLoading(false);
     }
   }
 

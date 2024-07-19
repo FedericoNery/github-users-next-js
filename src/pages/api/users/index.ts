@@ -1,18 +1,9 @@
+import { responseHandler } from '@/lib/api-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === 'GET') {
-      try {
-        const response = await fetch('https://api.github.com/users');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        res.status(200).json(data);
-      } catch (error) {
-        res.status(500).json({ message: error.message });
-      }
-    } else {
-      res.status(405).json({ message: 'Method Not Allowed' });
-    }
-  }
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  responseHandler(req, res, 'https://api.github.com/users');
+}
