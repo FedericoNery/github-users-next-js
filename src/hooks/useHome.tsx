@@ -1,15 +1,12 @@
-import { useGlobalState } from '@/context/UserContext';
-import { useUsers } from '@/hooks/useUsers';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useGlobalState } from "@/context/UserContext";
+import { useUsers } from "@/hooks/useUsers";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export function useHome(initialUsers) {
-  const router = useRouter();
-  const { searchUsernameValue, starredUsers, setSearchUsernameValue } =
-    useGlobalState();
-  const { users, loading, error } = useUsers(initialUsers, searchUsernameValue);
+	const { data, loading, error } = useUsers(initialUsers);
 
-  useEffect(() => {
+	/* useEffect(() => {
     const handleRouteChange = () => {
       setSearchUsernameValue('');
     };
@@ -19,7 +16,7 @@ export function useHome(initialUsers) {
     return () => {
       router.events.off('routeChangeStart', handleRouteChange);
     };
-  }, [router, setSearchUsernameValue]);
+  }, [router, setSearchUsernameValue]); */
 
-  return { users, loading, error, starredUsers };
+	return { users: data, loading, error /* starredUsers */ };
 }

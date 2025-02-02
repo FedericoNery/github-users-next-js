@@ -1,8 +1,6 @@
-import { useGlobalState } from '@/context/UserContext';
 import { useEffect, useState } from 'react';
 
-export function useDebounceAndThrottle(debounceTime = 500, throttleTime = 1000) {
-  const { setSearchUsernameValue } = useGlobalState();
+export function useDebounceAndThrottle(debounceTime = 500, throttleTime = 1000, onChange) {
   const [instantValue, setInstantValue] = useState('');
   const [debouncedValue, setDebouncedValue] = useState('');
 
@@ -18,7 +16,7 @@ export function useDebounceAndThrottle(debounceTime = 500, throttleTime = 1000) 
 
   useEffect(() => {
     const throttleTimer = setTimeout(() => {
-      setSearchUsernameValue(debouncedValue);
+      onChange(debouncedValue);
     }, throttleTime);
 
     return () => {

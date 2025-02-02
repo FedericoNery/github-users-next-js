@@ -1,42 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useGlobalState } from "@/context/UserContext";
+import { useEffect } from "react";
+import { useFetch } from "./useFetch";
 
-export function useUsers(initialUsers = [], searchUsernameValue = '') {
-  const [users, setUsers] = useState(initialUsers);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+export function useUsers(initialUsers) {
+	const { searchUsernameValue } = useGlobalState();
+	const endpoint = `/api/users/search?term=${searchUsernameValue}`;
+	const isNotEmptyUsername = searchUsernameValue.trim() !== "";
 
-  async function fetchUsers() {
-    try {
-      const response = await fetch('/api/users');
-      const data = await response.json();
-      setUsers(data);
-      setLoading(false);
-    } catch (e) {
-      setError(true);
-      setLoading(false);
-    }
-  }
+	const { data, loading: loadingFetch, error: errorFetch, setEndpoint } = useFetch(
+		endpoint,
+		initialUsers,
+		isNotEmptyUsername,
+	);
 
-  async function fetchSearchUsers(term = '') {
-    try {
-      const response = await fetch(`/api/users/search?term=${term}`);
-      const data = await response.json();
-      const { total_count, incomplete_results, items } = data;
-      setUsers(items);
-      setLoading(false);
-    } catch (e) {
-      setError(true);
-      setLoading(false);
-    }
-  }
+	useEffect(() => {
+		setEndpoint(`/api/users/search?term=${searchUsernameValue}`);
+	}, [searchUsernameValue]);
 
-  useEffect(() => {
-    if (searchUsernameValue != '') {
-      fetchSearchUsers(searchUsernameValue);
-    } else {
-      fetchUsers();
-    }
-  }, [searchUsernameValue]);
-
-  return { users, loading, error };
+	const processedData = isNotEmptyUsername ? data?.items : initialUsers;
+	const loading = isNotEmptyUsername ? loadingFetch : false
+	const error = isNotEmptyUsername ? errorFetch : false
+	return { data: processedData, loading, error };
 }

@@ -1,25 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useFetch } from './useFetch';
 
-export function useUsersDetail(username) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  async function fetchUsers() {
-    try {
-      const response = await fetch(`/api/users/${username}`);
-      const data = await response.json();
-      setUser(data);
-      setLoading(false);
-    } catch (e) {
-      setError(true);
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchUsers(username);
-  }, [username]);
-
+export function useUsersDetail(username: string) {
+  const {data: user, loading, error } = useFetch(`/api/users/${username}`)
   return { user, loading, error };
 }
