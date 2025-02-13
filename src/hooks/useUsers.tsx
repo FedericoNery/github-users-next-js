@@ -1,9 +1,9 @@
-import { useGlobalState } from "@/context/UserContext";
+import { useHomeState } from "@/context/HomeContext";
 import { useEffect } from "react";
 import { useFetch } from "./useFetch";
 
 export function useUsers(initialUsers) {
-	const { searchUsernameValue } = useGlobalState();
+	const { searchUsernameValue } = useHomeState();
 	const endpoint = `/api/users/search?term=${searchUsernameValue}`;
 	const isNotEmptyUsername = searchUsernameValue.trim() !== "";
 

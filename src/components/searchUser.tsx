@@ -1,10 +1,10 @@
 import { Input } from "@/components/ui/input";
-import { useGlobalState } from "@/context/UserContext";
+import { useHomeState } from "@/context/HomeContext";
 import { useDebounceAndThrottle } from "@/hooks/useDebounceAndThrottle";
 import { Search } from "lucide-react";
 
 const SearchUser = () => {
-	const { onChangeSearchUsernameValue } = useGlobalState()
+	const { onChangeSearchUsernameValue } = useHomeState()
 	const { setInstantValue } = useDebounceAndThrottle(500, 1000, onChangeSearchUsernameValue);
 
 	return (

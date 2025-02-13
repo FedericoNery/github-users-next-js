@@ -1,6 +1,7 @@
-import { useFetch } from './useFetch';
+import { useFetch } from "./useFetch";
 
 export function useUsersDetail(username: string) {
-  const {data: user, loading, error } = useFetch(`/api/users/${username}`)
-  return { user, loading, error };
+	const endpoint = `/api/users/${username}`;
+	const { data: user, loading, error } = useFetch(endpoint);
+	return { user, loading, error };
 }

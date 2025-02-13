@@ -14,9 +14,7 @@ export function useFetch(initialEndpoint: string, initialDataValue = null, enabl
 			setLoading(true);
 			setError(false);
 			try {
-				const response = await axios.get(endpointState, {
-					headers: { "Cache-Control": "no-cache" }, // Evitar cache del navegador.
-				});
+				const response = await axios.get(endpointState);
 				const data = response.data;
 				setData(data);
 				setLoading(false);
