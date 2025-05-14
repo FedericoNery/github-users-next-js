@@ -1,12 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 
-export function useFetch(initialEndpoint: string, initialDataValue = null, enableRequest = true) {
-	const [endpointState, setEndpoint] = useState(initialEndpoint)
+export function useFetch(method: CallableFunction, initialDataValue = null, enableRequest = true) {
 	const [data, setData] = useState(initialDataValue);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
-	
 	
 
 	useEffect(() => {
@@ -14,9 +11,8 @@ export function useFetch(initialEndpoint: string, initialDataValue = null, enabl
 			setLoading(true);
 			setError(false);
 			try {
-				const response = await axios.get(endpointState);
-				const data = response.data;
-				setData(data);
+				const response = await method();
+				setData(response);
 				setLoading(false);
 			} catch (e) {
 				setError(true);
@@ -28,7 +24,7 @@ export function useFetch(initialEndpoint: string, initialDataValue = null, enabl
 		if(enableRequest){
 			fetchData();
 		}
-	}, [endpointState]);
+	}, []);
 
-	return { data, loading, error, setEndpoint };
+	return { data, loading, error };
 }

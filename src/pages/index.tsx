@@ -1,3 +1,4 @@
+import { getUsers } from "@/api/users";
 import HomeContainer from "@/components/pages/home/HomeContainer";
 import { SkeletonCardUser } from "@/components/pages/home/SkeletonCardUser";
 import RenderData from "@/components/renderData";
@@ -40,20 +41,15 @@ const NotFoundComponent = () => {
 
 export async function getStaticProps() {
 	try {
-		const response = await fetch("http://localhost:3002/api/users/");
-		if (!response.ok) {
-			throw new Error("Network response was not ok");
-		}
-		const initialUsers = await response.json();
-
+		const initialUsers = await getUsers();
 		return { props: { initialUsers }, revalidate: 300 };
 	} catch (error) {
 		return { props: { initialUsers: [] } };
 	}
 }
 
-export default function Home({initialUsers}) {
-	const { data: users, loading, error } = useUsers(initialUsers);
+export default function Home({ initialUsers }: { initialUsers: UserInterface[] }) {
+	const { users, loading, error } = useUsers(initialUsers);
 
 	return (
 		<RenderData
