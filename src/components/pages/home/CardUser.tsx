@@ -4,14 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 
 export function CardUser({ user }) {
-
 	const { login, avatar_url, url, id } = user;
 
 	return (
-		<Card
-			className="
-    w-11/12 md:w-[700px] lg:w-[700px] xl:w-[700px]"
-		>
+		<Card className="w-11/12 md:w-[700px] lg:w-[700px] xl:w-[700px] 2xl:w-[700px] bg-white shadow-sm hover:shadow-lg hover:cursor-pointer transition-shadow duration-300 ease-in-out mb-2">
 			<CardContent className="flex items-center justify-between p-4">
 				<div className="flex items-center">
 					<Avatar>

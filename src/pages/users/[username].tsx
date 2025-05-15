@@ -2,14 +2,14 @@ import DetailsContainer from '@/components/pages/details/DetailsContainer';
 
 import RenderData from '@/components/renderData';
 
-import { useUsersDetail } from '@/hooks/useUsersDetail';
+import { useFetchUserDetails } from '@/hooks/users/details/useFetchUserDetails';
 
 import { useRouter } from 'next/router';
 
 export default function UserDetailPage() {
   const router = useRouter();
   const { username } = router.query;
-  const { user, loading, error } = useUsersDetail(username);
+  const { user, loading, error } = useFetchUserDetails(username);
 
   return <RenderData
     loading={loading}

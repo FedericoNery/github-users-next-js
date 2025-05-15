@@ -1,8 +1,8 @@
-import { getUsers } from "@/api/users";
+import { getUsers } from "@/services/usersService";
 import HomeContainer from "@/components/pages/home/HomeContainer";
 import { SkeletonCardUser } from "@/components/pages/home/SkeletonCardUser";
 import RenderData from "@/components/renderData";
-import { useUsers } from "@/hooks/useUsers";
+import { useFetchUsers } from "@/hooks/users/home/useFetchUsers";
 
 interface UserInterface {
 	login: string;
@@ -49,7 +49,7 @@ export async function getStaticProps() {
 }
 
 export default function Home({ initialUsers }: { initialUsers: UserInterface[] }) {
-	const { users, loading, error } = useUsers(initialUsers);
+	const { users, loading, error } = useFetchUsers(initialUsers);
 
 	return (
 		<RenderData
